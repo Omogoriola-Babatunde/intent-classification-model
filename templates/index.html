@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style1.css') }}">
+    <title>Intent Classification</title>
+</head>
+<body>
+    <header>
+        <h1>Intent Classification</h1>
+    </header>
+    <main>
+        <div class="container">
+            <h2>Enter a Text:</h2>
+            <input type="text" id="text-input" placeholder="Type your text here">
+            <button id="classify-button">Classify</button>
+            <div id="result" class="hidden">
+                <h3>Result:</h3>
+                <p id="result-text"></p>
+            </div>
+        </div>
+    </main>
+    <footer>
+        &copy; 2023 Babatunde Omogoriola Alao 180404099
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#classification-form").submit(function (event) {
+                event.preventDefault();
+                const inputText = $("#text-input").val();
+
+                if (inputText.trim() !== '') {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/classify',
+                        data: JSON.stringify({ text: inputText }),
+                        contentType: 'application/json',
+                        success: function (data) {
+                            $("#result-text").text(data.result);
+                            $("#result").removeClass('hidden');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
